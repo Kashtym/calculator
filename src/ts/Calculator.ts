@@ -23,51 +23,52 @@ export class Calculator {
 
     addSymbol = (elem: Event) => {
         let target = elem.target as HTMLElement;
-        let numStr = target?.textContent;
-        if (this.input.textContent!.length < 12) {
-            if (numStr === ".") {
-                if (this.input.textContent?.includes(".")) {
-                    return;
+        let numStr = target.textContent;
+        if (this.input.textContent) {
+            if (this.input.textContent?.length < 12) {
+                if (numStr === ".") {
+                    if (this.input.textContent?.includes(".")) {
+                        return;
+                    }
+                    if (this.input.textContent?.length < 1) {
+                        this.input.textContent += "0";
+                    }
                 }
-                if (this.input.textContent!.length < 1) {
-                    this.input.textContent! += "0";
-                }
+                this.input.textContent += numStr;
             }
-            this.input.textContent! += numStr;
         }
     };
 
     addOperation = (elem: Event) => {
         let target = elem.target as HTMLElement;
-        let operation = target?.textContent;
-
-        if (this.input.textContent!.length < 1) {
-            if (this.output.textContent!.length > 1) {
-                this.output.textContent = this.output.textContent!.slice(0, -1) + operation!;
+        let operation = target.textContent;
+        if (!this.input.textContent) {
+            if (this.output.textContent) {
+                this.output.textContent = this.output.textContent.slice(0, -1) + operation;
             }
             return;
         }
 
-        if (this.input.textContent!.slice(-1) === ".") {
-            this.input.textContent = this.input.textContent!.slice(0, -1);
+        if (this.input.textContent.slice(-1) === ".") {
+            this.input.textContent = this.input.textContent.slice(0, -1);
         }
 
-        this.output.textContent = this.input.textContent + operation!;
+        this.output.textContent = this.input.textContent + operation;
         this.input.textContent = "";
     };
 
     calculateOperation = () => {
-        if (this.output.textContent!.length < 1) {
+        if (!this.output.textContent) {
             return;
         }
 
-        if (this.input.textContent!.length < 1) {
+        if (!this.input.textContent) {
             return;
         }
 
-        const num1: number = parseFloat(this.output.textContent!.slice(0, -1));
-        const num2: number = parseFloat(this.input.textContent!);
-        const operation = this.output.textContent!.slice(-1);
+        const num1: number = parseFloat(this.output.textContent.slice(0, -1));
+        const num2: number = parseFloat(this.input.textContent);
+        const operation = this.output.textContent.slice(-1);
 
         let result: number;
 

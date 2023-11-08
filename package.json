@@ -2,6 +2,7 @@
     "name": "calculator",
     "version": "1.0.0",
     "description": "",
+    "type": "module",
     "main": "index.js",
     "scripts": {
         "compile": "node-sass src/scss/main.scss dist/css/style.css && tsc"
