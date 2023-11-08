@@ -1,4 +1,4 @@
-import { Calculator } from "./Calculator";
+import { Calculator } from "./Calculator.js";
 
 const calcDisplayInput = document.querySelector(".display__item_input") as HTMLElement;
 const calcDisplayOutput = document.querySelector(".display__item_output") as HTMLElement;

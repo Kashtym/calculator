@@ -1,4 +1,4 @@
-import { operationsList } from "./operationList";
+import { operationsList } from "./operationList.js";
 
 export class Calculator {
     input: HTMLElement;
@@ -24,18 +24,22 @@ export class Calculator {
     addSymbol = (elem: Event) => {
         let target = elem.target as HTMLElement;
         let numStr = target.textContent;
-        if (this.input.textContent) {
-            if (this.input.textContent?.length < 12) {
-                if (numStr === ".") {
-                    if (this.input.textContent?.includes(".")) {
-                        return;
-                    }
-                    if (this.input.textContent?.length < 1) {
-                        this.input.textContent += "0";
-                    }
+
+        if (!this.input.textContent) {
+            this.input.textContent = numStr;
+            return;
+        }
+
+        if (this.input.textContent?.length < 12) {
+            if (numStr === ".") {
+                if (this.input.textContent?.includes(".")) {
+                    return;
                 }
-                this.input.textContent += numStr;
+                if (this.input.textContent?.length < 1) {
+                    this.input.textContent += "0";
+                }
             }
+            this.input.textContent += numStr;
         }
     };
 
