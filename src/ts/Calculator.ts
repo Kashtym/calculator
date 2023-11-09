@@ -1,6 +1,9 @@
 import { operationsList } from "./operationList.js";
 
 export class Calculator {
+    private precise = 15;
+    private inputLenght = 12;
+
     input: HTMLElement;
     output: HTMLElement;
 
@@ -11,14 +14,21 @@ export class Calculator {
     }
 
     clearDisplay = () => {
-        this.input.textContent = "";
+        this.input.textContent = "0";
         this.output.textContent = "";
     };
 
     deleteSymbol = () => {
-        if (this.input.textContent?.length) {
-            this.input.textContent = this.input.textContent.slice(0, -1);
+        if (!this.input.textContent) {
+            return;
         }
+
+        if (this.input.textContent?.length === 1) {
+            this.input.textContent = "0";
+            return;
+        }
+
+        this.input.textContent = this.input.textContent.slice(0, -1);
     };
 
     addSymbol = (elem: Event) => {
@@ -26,19 +36,18 @@ export class Calculator {
         let numStr = target.textContent;
 
         if (!this.input.textContent) {
-            this.input.textContent = numStr;
             return;
         }
 
-        if (this.input.textContent?.length < 12) {
-            if (numStr === ".") {
-                if (this.input.textContent?.includes(".")) {
-                    return;
-                }
-                if (this.input.textContent?.length < 1) {
-                    this.input.textContent += "0";
-                }
+        if (this.input.textContent?.length < this.inputLenght) {
+            if (numStr === "." && this.input.textContent?.includes(".")) {
+                return;
             }
+
+            if (this.input.textContent === "0" && numStr !== ".") {
+                this.input.textContent = "";
+            }
+
             this.input.textContent += numStr;
         }
     };
@@ -58,7 +67,7 @@ export class Calculator {
         }
 
         this.output.textContent = this.input.textContent + operation;
-        this.input.textContent = "";
+        this.input.textContent = "0";
     };
 
     calculateOperation = () => {
@@ -78,13 +87,13 @@ export class Calculator {
 
         if (operationsList.hasOwnProperty(operation)) {
             result = operationsList[operation](num1, num2);
-            result = this.precise(result);
+            result = this.makePreciseResult(result);
             this.output.textContent = result.toString();
-            this.input.textContent = "";
+            this.input.textContent = "0";
         }
     };
 
-    private precise = (num: number) => {
-        return parseFloat(num.toPrecision(15));
+    private makePreciseResult = (num: number) => {
+        return parseFloat(num.toPrecision(this.precise));
     };
 }
