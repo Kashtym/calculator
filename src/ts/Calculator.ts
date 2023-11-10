@@ -1,8 +1,8 @@
 import { operationsList } from "./operationList.js";
 
 export class Calculator {
-    private precise = 15;
-    private inputLenght = 12;
+    private precise = 15; // decimal precision
+    private inputLenght = 12; //max lenght input row
 
     input: HTMLElement;
     output: HTMLElement;
@@ -55,11 +55,20 @@ export class Calculator {
     addOperation = (elem: Event) => {
         let target = elem.target as HTMLElement;
         let operation = target.textContent;
+
         if (!this.input.textContent) {
-            if (this.output.textContent) {
-                this.output.textContent = this.output.textContent.slice(0, -1) + operation;
-            }
             return;
+        }
+
+        if (this.input.textContent === "0") {
+            if (this.output.textContent) {
+                if (/\D/.test(this.output.textContent.slice(-1))) {
+                    this.output.textContent = this.output.textContent.slice(0, -1);
+                }
+                this.output.textContent = this.output.textContent + operation;
+            }
+
+            // return;
         }
 
         if (this.input.textContent.slice(-1) === ".") {
